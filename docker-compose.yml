@@ -292,7 +292,7 @@ services:
       SOCIAL_AUTH_EDX_OIDC_URL_ROOT: http://edx.devstack.lms:18000/oauth2
       ENABLE_DJANGO_TOOLBAR: 1
       DJANGO_WATCHMAN_TIMEOUT: 30
-    image: edxops/credentials:${OPENEDX_RELEASE:-latest}
+    image: openedx/credentials-dev:${OPENEDX_RELEASE:-latest}
     networks:
       default:
         aliases:
