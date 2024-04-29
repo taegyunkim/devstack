@@ -16,22 +16,26 @@ We are forking some of those repositories to keep maintaining them.
 
 If you use any of the following repositories, please make sure to update the remote URLs:
 
-- **edx-analytics-dashboard**::
+To update devstack and the local repositories::
 
+    cd /path/to/devstack
+    git pull
+
+    cd ..
+    cd edx-analytics-dashboard
     git remote set-url origin git@github.com:edx/edx-analytics-dashboard.git
+    git pull
 
-
-- **edx-analytics-data-api**::
-
+    cd ..
+    cd edx-analytics-data-api
     git remote set-url origin git@github.com:edx/edx-analytics-data-api.git
+    git pull
 
-- **edx-analytics-data-api-client**::
+If you happen to use `edx-analytics-data-api-client`::
 
+    cd /path/to/edx-analytics-data-api-client
     git remote set-url origin git@github.com:edx/edx-analytics-data-api-client.git
-
-
-
-
+    git pull
 
 2024-02-25 - Mongo upgrade from version 4.4 to 5.0
 **************************************************
