@@ -28,14 +28,14 @@ repos=(
     "https://github.com/openedx/edx-notes-api.git"
     "https://github.com/openedx/edx-platform.git"
     "https://github.com/openedx/xqueue.git"
-    "https://github.com/openedx/edx-analytics-dashboard.git"
+    "https://github.com/edx/edx-analytics-dashboard.git"
     "https://github.com/openedx/frontend-app-gradebook.git"
     "https://github.com/openedx/frontend-app-learner-dashboard"
     "https://github.com/openedx/frontend-app-learner-record"
     "https://github.com/edx/frontend-app-payment.git"
     "https://github.com/openedx/frontend-app-publisher.git"
-    "https://github.com/openedx/edx-analytics-dashboard.git"
-    "https://github.com/openedx/edx-analytics-data-api.git"
+    "https://github.com/edx/edx-analytics-dashboard.git"
+    "https://github.com/edx/edx-analytics-data-api.git"
 )
 
 non_release_repos=(
@@ -58,14 +58,14 @@ ssh_repos=(
     "git@github.com:openedx/edx-notes-api.git"
     "git@github.com:openedx/edx-platform.git"
     "git@github.com:openedx/xqueue.git"
-    "git@github.com:openedx/edx-analytics-dashboard.git"
+    "git@github.com:edx/edx-analytics-dashboard.git"
     "git@github.com:openedx/frontend-app-gradebook.git"
     "git@github.com:openedx/frontend-app-learner-dashboard.git"
     "git@github.com:openedx/frontend-app-learner-record.git"
     "git@github.com:edx/frontend-app-payment.git"
     "git@github.com:openedx/frontend-app-publisher.git"
-    "git@github.com:openedx/edx-analytics-dashboard.git"
-    "git@github.com:openedx/edx-analytics-data-api.git"
+    "git@github.com:edx/edx-analytics-dashboard.git"
+    "git@github.com:edx/edx-analytics-data-api.git"
 )
 
 non_release_ssh_repos=(
