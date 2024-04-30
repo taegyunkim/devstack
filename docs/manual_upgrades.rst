@@ -31,7 +31,7 @@ To update devstack and the local repositories::
     git remote set-url origin git@github.com:edx/edx-analytics-data-api.git
     git pull
 
-If you happen to use `edx-analytics-data-api-client`::
+If you happen to use ``edx-analytics-data-api-client``::
 
     cd /path/to/edx-analytics-data-api-client
     git remote set-url origin git@github.com:edx/edx-analytics-data-api-client.git
