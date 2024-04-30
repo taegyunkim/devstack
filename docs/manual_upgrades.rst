@@ -8,8 +8,8 @@ Please add new instructions to the top, include a date, and make a post in the `
 (If you just need to update your devstack to the latest version of everything, see :doc:`updating_devstack`.)
 
 
-2024-04-29 - Moved Open edX repositories
-****************************************
+2024-04-29 - Moved Open edX analytics repositories
+**************************************************
 
 Several repositories were being deprecated by Open edX (`issue #227 <https://github.com/openedx/public-engineering/issues/227>`_).
 We are forking some of those repositories to keep maintaining them.
