@@ -8,6 +8,35 @@ Please add new instructions to the top, include a date, and make a post in the `
 (If you just need to update your devstack to the latest version of everything, see :doc:`updating_devstack`.)
 
 
+2024-04-29 - Moved Open edX analytics repositories
+**************************************************
+
+Several repositories were being deprecated by Open edX (`issue #227 <https://github.com/openedx/public-engineering/issues/227>`_).
+We are forking some of those repositories to keep maintaining them.
+
+If you use any of the following repositories, please make sure to update the remote URLs:
+
+To update devstack and the local repositories::
+
+    cd /path/to/devstack
+    git pull
+
+    cd ..
+    cd edx-analytics-dashboard
+    git remote set-url origin git@github.com:edx/edx-analytics-dashboard.git
+    git pull
+
+    cd ..
+    cd edx-analytics-data-api
+    git remote set-url origin git@github.com:edx/edx-analytics-data-api.git
+    git pull
+
+If you happen to use `edx-analytics-data-api-client`::
+
+    cd /path/to/edx-analytics-data-api-client
+    git remote set-url origin git@github.com:edx/edx-analytics-data-api-client.git
+    git pull
+
 2024-02-25 - Mongo upgrade from version 4.4 to 5.0
 **************************************************
 

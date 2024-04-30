@@ -93,5 +93,5 @@ Some common service combinations include:
 .. _xqueue: https://github.com/openedx/xqueue
 .. _coursegraph: https://github.com/openedx/edx-platform/tree/master/cms/djangoapps/coursegraph#coursegraph-support
 .. _frontend-app-ora-grading: https://github.com/edx/frontend-app-ora-grading
-.. _insights: https://github.com/openedx/edx-analytics-dashboard
-.. _analyticsapi: https://github.com/openedx/edx-analytics-data-api
+.. _insights: https://github.com/edx/edx-analytics-dashboard
+.. _analyticsapi: https://github.com/edx/edx-analytics-data-api
