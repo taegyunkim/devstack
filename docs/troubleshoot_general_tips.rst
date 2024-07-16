@@ -185,7 +185,7 @@ You can point to the 2U fork of devstack with the following command::
 
     % git remote set-url origin ssh://git@github.com/edx/devstack
 
-Note: You don't need to use ``ssh`` if you were using ``https` instead.
+Note: You don't need to use ``ssh`` if you were using ``https`` instead.
 
 Alternatively, if you are at a roadblock and
 *don't care about any changes you've made to your local copy of the repository*
