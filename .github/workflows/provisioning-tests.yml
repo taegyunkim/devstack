@@ -7,9 +7,11 @@ on:
     branches: [master]
     paths-ignore:
       - '**.rst'
+      - 'docs/'
   pull_request:
     paths-ignore:
       - '**.rst'
+      - 'docs/'
   schedule:
     # run at 7:30 am M-F
     - cron: '30 11 * * 1-5'
@@ -108,6 +110,3 @@ jobs:
            to: devstack-provisioning-tests@2u-internal.opsgenie.net
            from: github-actions <github-actions@edx.org>
            body: Devstack provisioning tests in ${{github.repository}} are back to normal for ${{matrix.services}}
-
-      - name: docs
-        run:  make docs
