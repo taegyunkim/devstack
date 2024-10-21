@@ -17,7 +17,7 @@ services:
   chrome:
     container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.chrome"
     hostname: chrome.devstack.edx
-    image: edxops/chrome:${OPENEDX_RELEASE:-latest}
+    image: edxops/chrome:latest
     shm_size: 2g
     networks:
       default:
@@ -89,7 +89,7 @@ services:
   firefox:
     container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.firefox"
     hostname: firefox.devstack.edx
-    image: edxops/firefox:${OPENEDX_RELEASE:-latest}
+    image: edxops/firefox:latest
     shm_size: 2g
     networks:
       default:
@@ -290,7 +290,7 @@ services:
       SOCIAL_AUTH_EDX_OIDC_URL_ROOT: http://edx.devstack.lms:18000/oauth2
       ENABLE_DJANGO_TOOLBAR: 1
       DJANGO_WATCHMAN_TIMEOUT: 30
-    image: openedx/credentials-dev:${OPENEDX_RELEASE:-latest}
+    image: edxops/credentials-dev:latest
     networks:
       default:
         aliases:
@@ -319,7 +319,7 @@ services:
       TEST_ELASTICSEARCH_URL: "edx.devstack.elasticsearch710"
       ENABLE_DJANGO_TOOLBAR: 1
       DJANGO_WATCHMAN_TIMEOUT: 30
-    image: edxops/discovery-dev:${OPENEDX_RELEASE:-latest}
+    image: edxops/discovery-dev:latest
     networks:
       default:
         aliases:
@@ -346,7 +346,7 @@ services:
     environment:
       DJANGO_WATCHMAN_TIMEOUT: 30
       ENABLE_DJANGO_TOOLBAR: 1
-    image: edxops/ecommerce-dev:${OPENEDX_RELEASE:-latest}
+    image: edxops/ecommerce-dev:latest
     networks:
       default:
         aliases:
@@ -367,7 +367,7 @@ services:
       - lms
       - mysql80
       - mysql57
-    image: openedx/edx-notes-api-dev:${OPENEDX_RELEASE:-latest}
+    image: edxops/edx-notes-api-dev:latest
     networks:
       default:
         aliases:
@@ -395,7 +395,7 @@ services:
       - mongo
       - elasticsearch710
       - opensearch12
-    image: edxops/forum:${OPENEDX_RELEASE:-latest}
+    image: edxops/forum:latest
     stdin_open: true
     tty: true
     networks:
@@ -432,7 +432,7 @@ services:
       CMS_CFG: "/edx/etc/studio.yml"
       PATH: "/edx/app/edxapp/venvs/edxapp/bin:/edx/app/edxapp/nodeenv/bin:/edx/app/edxapp/edx-platform/node_modules/.bin:/edx/app/edxapp/edx-platform/bin:${PATH}"
       SERVICE_VARIANT: lms
-    image: openedx/lms-dev:${OPENEDX_RELEASE:-latest}
+    image: edxops/lms-dev:latest
     networks:
       default:
         aliases:
@@ -468,7 +468,7 @@ services:
       LMS_HOST: http://localhost:18000
       DJANGO_SETTINGS_MODULE: analytics_dashboard.settings.devstack
       ANALYTICS_DASHBOARD_CFG: /edx/etc/insights.yml
-    image: edxops/insights-dev:${OPENEDX_RELEASE:-latest}
+    image: edxops/insights-dev:latest
     working_dir: /edx/app/insights/insights
     networks:
       default:
@@ -481,7 +481,7 @@ services:
       - ${PWD}/configuration_files/insights.yml:/edx/etc/insights.yml
 
   analyticsapi:
-    image: edxops/analytics-api-dev:${OPENEDX_RELEASE:-latest}
+    image: edxops/analytics-api-dev:latest
     container_name: edx.devstack.analyticsapi
     hostname: analyticsapi
     depends_on:
@@ -535,7 +535,7 @@ services:
       CELERY_BROKER_PASSWORD: password
       DJANGO_WATCHMAN_TIMEOUT: 30
       ANALYTICS_DASHBOARD_CFG: /edx/etc/registrar.yml
-    image: edxops/registrar-dev:${OPENEDX_RELEASE:-latest}
+    image: edxops/registrar-dev:latest
     working_dir: /edx/app/registrar
     networks:
       default:
@@ -573,7 +573,7 @@ services:
       CELERY_BROKER_VHOST: 10
       CELERY_BROKER_PASSWORD: password
       DJANGO_WATCHMAN_TIMEOUT: 30
-    image: edxops/registrar-dev:${OPENEDX_RELEASE:-latest}
+    image: edxops/registrar-dev:latest
     networks:
       default:
         aliases:
@@ -609,7 +609,7 @@ services:
       LMS_CFG: "/edx/etc/lms.yml"
       CMS_CFG: "/edx/etc/studio.yml"
       SERVICE_VARIANT: cms
-    image: openedx/lms-dev:${OPENEDX_RELEASE:-latest}
+    image: edxops/lms-dev:latest
     networks:
       default:
         aliases:
@@ -625,7 +625,7 @@ services:
 
   xqueue:
     container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.xqueue"
-    image: edxops/xqueue-dev:${OPENEDX_RELEASE:-latest}
+    image: edxops/xqueue-dev:latest
     working_dir: /edx/app/xqueue/xqueue
     command: bash -c 'source /edx/app/xqueue/xqueue_env && while true; do python /edx/app/xqueue/xqueue/manage.py runserver 0.0.0.0:18040 ; sleep 2; done'
     volumes:
@@ -645,7 +645,7 @@ services:
 
   xqueue_consumer:
     container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.xqueue_consumer"
-    image: edxops/xqueue-dev:${OPENEDX_RELEASE:-latest}
+    image: edxops/xqueue-dev:latest
     working_dir: /edx/app/xqueue/xqueue
     command: bash -c 'source /edx/app/xqueue/xqueue_env && while true; do python /edx/app/xqueue/xqueue/manage.py run_consumer ; sleep 2; done'
     volumes:
