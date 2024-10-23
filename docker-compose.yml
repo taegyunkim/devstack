@@ -297,6 +297,8 @@ services:
           - edx.devstack.credentials
     ports:
       - "18150:18150"
+    volumes:
+      - ${PWD}/py_configuration_files/credentials.py:/edx/app/credentials/credentials/credentials/settings/devstack.py
 
   discovery:
     command: bash -c 'source /edx/app/discovery/discovery_env && while true; do python /edx/app/discovery/discovery/manage.py runserver 0.0.0.0:18381; sleep 2; done'
