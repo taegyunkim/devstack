@@ -5,6 +5,7 @@ services:
       - credentials_node_modules:/edx/app/credentials/credentials/node_modules
       - credentials_tox:/edx/app/credentials/credentials/.tox
       - ${DEVSTACK_WORKSPACE}/src:/edx/src
+      - ${PWD}/py_configuration_files/credentials.py:/edx/app/credentials/credentials/credentials/settings/devstack.py
   discovery:
       volumes:
       - ${DEVSTACK_WORKSPACE}/course-discovery:/edx/app/discovery/discovery
