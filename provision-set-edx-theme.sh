@@ -23,7 +23,7 @@ sed -i '' "s|^#     \"/edx/app/edxapp/edx-platform/themes/\"|    \"/edx/app/edxa
 sed -i '' "/COMPREHENSIVE_THEME_DIRS = \[/a\\
 \"$THEME_DIR\",
 " "$DEVSTACK_FILE"
-sed -i '' "s|^# \]|]|" "$DEVSTACK_FILE"  # Uncomment the closing bracket
+sed -i '' "s|^# \]|]|" "$DEVSTACK_FILE"
 sed -i '' "s|^# TEMPLATES\[1\]\[\"DIRS\"\] = _make_mako_template_dirs|TEMPLATES[1][\"DIRS\"] = _make_mako_template_dirs|" "$DEVSTACK_FILE"
 sed -i '' "s|^# derive_settings(__name__)|derive_settings(__name__)|" "$DEVSTACK_FILE"
 

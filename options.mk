@@ -91,8 +91,3 @@ credentials+cms+discovery+ecommerce+insights+lms+registrar
 # Separated by plus signs. Listed in alphabetical order for clarity.
 THIRD_PARTY_SERVICES ?= \
 chrome+coursegraph+elasticsearch710+firefox+memcached+mongo+mysql57+mysql80+opensearch12+redis+namenode+datanode+resourcemanager+nodemanager+sparkmaster+sparkworker+vertica
-
-# Set default theme for MFEs
-ifndef PARAGON_BRAND_PACKAGE
-  PARAGON_BRAND_PACKAGE = edx/brand-edx.org
-endif
