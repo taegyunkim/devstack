@@ -872,6 +872,26 @@ services:
     depends_on:
       - lms
 
+  designer:
+    image: edxops/designer-dev:latest
+    container_name: edx.devstack.designer
+    volumes:
+      - .:/edx/app/designer
+    command: bash -c 'while true; do python /edx/app/designer/manage.py runserver 0.0.0.0:18808; sleep 2; done'
+    ports:
+      - "18808:18808"
+    depends_on:
+      - mysql80
+    networks:
+      default:
+        aliases:
+          - edx.devstack.xqueue
+    stdin_open: true
+    tty: true
+    environment:
+      DJANGO_SETTINGS_MODULE: designer.settings.devstack
+      ENABLE_DJANGO_TOOLBAR: 1
+
   frontend-app-profile:
     extends:
       file: microfrontend.yml
