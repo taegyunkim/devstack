@@ -8,6 +8,11 @@ DEBUG = True
 LOG_SETTINGS_DEBUG = True
 LOG_SETTINGS_DEV_ENV = True
 
+# copied from common.py
+WSGI_APPLICATION = 'notesserver.wsgi.application'
+LOG_SETTINGS_LOG_DIR = '/var/tmp'
+LOG_SETTINGS_LOGGING_ENV = 'no_env'
+
 ALLOWED_HOSTS = ['*']
 
 # These values are derived from provision-ida-user.sh in the edx/devstack repo.
