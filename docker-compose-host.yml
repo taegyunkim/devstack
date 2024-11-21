@@ -40,7 +40,7 @@ services:
     volumes:
       - ${DEVSTACK_WORKSPACE}/edx-notes-api:/edx/app/notes/
       - ${DEVSTACK_WORKSPACE}/src:/edx/src
-      - ${PWD}/py_configuration_files/edx_notes_api.py:/edx/app/notes/notes/notesserver/settings/devstack.py
+      - ${PWD}/py_configuration_files/edx_notes_api.py:/edx/app/notes/notesserver/settings/devstack.py
   registrar:
     volumes:
       - ${DEVSTACK_WORKSPACE}/registrar:/edx/app/registrar
