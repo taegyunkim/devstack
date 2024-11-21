@@ -12,12 +12,14 @@ services:
       - discovery_node_modules:/edx/app/discovery/discovery/node_modules
       - discovery_tox:/edx/app/discovery/discovery/.tox
       - ${DEVSTACK_WORKSPACE}/src:/edx/src
+      - ${PWD}/py_configuration_files/course_discovery.py:/edx/app/discovery/discovery/course_discovery/settings/devstack.py
   ecommerce:
     volumes:
       - ${DEVSTACK_WORKSPACE}/ecommerce:/edx/app/ecommerce/ecommerce
       - ecommerce_node_modules:/edx/app/ecommerce/ecommerce/node_modules
       - ecommerce_tox:/edx/app/ecommerce/ecommerce/.tox
       - ${DEVSTACK_WORKSPACE}/src:/edx/src
+      - ${PWD}/py_configuration_files/ecommerce.py:/edx/app/ecommerce/ecommerce/ecommerce/settings/devstack.py
   forum:
     volumes:
       - ${DEVSTACK_WORKSPACE}/cs_comments_service:/edx/app/forum/cs_comments_service
@@ -29,6 +31,8 @@ services:
       - edxapp_tox:/edx/app/edxapp/edx-platform/.tox
       - edxapp_uploads:/edx/var/edxapp/uploads
       - ${DEVSTACK_WORKSPACE}/src:/edx/src
+      - ${PWD}/py_configuration_files/cms.py:/edx/app/edxapp/edx-platform/cms/envs/devstack.py
+      - ${PWD}/py_configuration_files/lms.py:/edx/app/edxapp/edx-platform/lms/envs/devstack.py
   lms-worker:
     volumes:
       - ${DEVSTACK_WORKSPACE}/edx-platform:/edx/app/edxapp/edx-platform
@@ -36,9 +40,11 @@ services:
     volumes:
       - ${DEVSTACK_WORKSPACE}/edx-notes-api:/edx/app/notes/
       - ${DEVSTACK_WORKSPACE}/src:/edx/src
+      - ${PWD}/py_configuration_files/edx_notes_api.py:/edx/app/notes/notesserver/settings/devstack.py
   registrar:
     volumes:
       - ${DEVSTACK_WORKSPACE}/registrar:/edx/app/registrar
+      - ${PWD}/py_configuration_files/registrar.py:/edx/app/registrar/registrar/registrar/settings/devstack.py
   registrar-worker:
     volumes:
       - ${DEVSTACK_WORKSPACE}/registrar:/edx/app/registrar
@@ -50,6 +56,8 @@ services:
       - edxapp_tox:/edx/app/edxapp/edx-platform/.tox
       - edxapp_uploads:/edx/var/edxapp/uploads
       - ${DEVSTACK_WORKSPACE}/src:/edx/src
+      - ${PWD}/py_configuration_files/cms.py:/edx/app/edxapp/edx-platform/cms/envs/devstack.py
+      - ${PWD}/py_configuration_files/lms.py:/edx/app/edxapp/edx-platform/lms/envs/devstack.py
   cms-worker:
     volumes:
       - ${DEVSTACK_WORKSPACE}/edx-platform:/edx/app/edxapp/edx-platform
@@ -57,10 +65,12 @@ services:
     volumes:
       - ${DEVSTACK_WORKSPACE}/edx-analytics-dashboard:/edx/app/insights/insights
       - insights_node_modules:/edx/app/insights/insights/node_modules
+      - ${PWD}/py_configuration_files/analytics_dashboard.py:/edx/app/insights/edx_analytics_dashboard/edx_analytics_dashboard/settings/devstack.py
   analyticsapi:
     volumes:
       - ${DEVSTACK_WORKSPACE}/edx-analytics-data-api:/edx/app/analytics_api/analytics_api
       - ${DEVSTACK_WORKSPACE}/src:/edx/src
+      - ${PWD}/py_configuration_files/analytics_data_api.py:/edx/app/analytics_api/analytics_api/analyticsdataserver/settings/devstack.py
 
   # Note that frontends mount `src` to /edx/app/src instead of /edx/src.
   # See ADR #5 for rationale.
