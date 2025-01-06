@@ -50,6 +50,7 @@ coursegraph \
 insights \
 analyticsapi \
 enterprise-catalog \
+license-manager \
  "
 
 # What should we provision?
