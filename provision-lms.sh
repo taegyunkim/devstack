@@ -88,5 +88,8 @@ done
 # Provision a retirement service account user
 ./provision-retirement-user.sh retirement retirement_service_worker
 
+# Provision the default retirement states
+./provision-retirement-states.sh
+
 # Add demo program
 ./programs/provision.sh lms
