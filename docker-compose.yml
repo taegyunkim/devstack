@@ -860,6 +860,8 @@ services:
       service: microfrontend
     working_dir: '/edx/app/frontend-app-account'
     container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.frontend-app-account"
+    environment:
+      PARAGON_BRAND_PACKAGE: '@edx/brand-edx.org@1.x'
     networks:
       default:
         aliases:
@@ -875,6 +877,8 @@ services:
       service: microfrontend
     working_dir: '/edx/app/frontend-app-profile'
     container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.frontend-app-profile"
+    environment:
+      PARAGON_BRAND_PACKAGE: '@edx/brand-edx.org@~2.0.0'
     networks:
       default:
         aliases:
@@ -890,6 +894,8 @@ services:
       service: microfrontend
     working_dir: '/edx/app/frontend-app-authn'
     container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.frontend-app-authn"
+    environment:
+      PARAGON_BRAND_PACKAGE: '@edx/brand-edx.org@2.x'
     networks:
       default:
         aliases:
@@ -905,6 +911,8 @@ services:
       service: microfrontend
     working_dir: '/edx/app/frontend-app-course-authoring'
     container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.frontend-app-course-authoring"
+    environment:
+      PARAGON_BRAND_PACKAGE: '@edx/brand-edx.org@2.x'
     networks:
       default:
         aliases:
@@ -935,6 +943,8 @@ services:
       service: microfrontend
     working_dir: '/edx/app/frontend-app-ora-grading'
     container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.frontend-app-ora-grading"
+    environment:
+      PARAGON_BRAND_PACKAGE: '@edx/brand-edx.org@2.x'
     networks:
       default:
         aliases:
@@ -950,6 +960,8 @@ services:
       service: microfrontend
     working_dir: '/edx/app/frontend-app-learner-dashboard'
     container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.frontend-app-learner-dashboard"
+    environment:
+      PARAGON_BRAND_PACKAGE: '@edx/brand-edx.org@2.x'
     networks:
       default:
         aliases:
@@ -965,6 +977,8 @@ services:
       service: microfrontend
     working_dir: '/edx/app/frontend-app-learner-record'
     container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.frontend-app-learner-record"
+    environment:
+      PARAGON_BRAND_PACKAGE: '@edx/brand-edx.org@~2.0.0'
     networks:
       default:
         aliases:
@@ -980,6 +994,8 @@ services:
       service: microfrontend
     working_dir: '/edx/app/frontend-app-learning'
     container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.frontend-app-learning"
+    environment:
+      PARAGON_BRAND_PACKAGE: '@edx/brand-edx.org@2.x'
     networks:
       default:
         aliases:
@@ -995,6 +1011,8 @@ services:
       service: microfrontend
     working_dir: '/edx/app/frontend-app-library-authoring'
     container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.frontend-app-library-authoring"
+    environment:
+      PARAGON_BRAND_PACKAGE: '@edx/brand-edx.org@2.x'
     networks:
       default:
         aliases:
@@ -1011,6 +1029,8 @@ services:
       service: microfrontend
     working_dir: '/edx/app/frontend-app-payment'
     container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.frontend-app-payment"
+    environment:
+      PARAGON_BRAND_PACKAGE: '@edx/brand-edx.org@^2.0.6'
     networks:
       default:
         aliases:
@@ -1026,6 +1046,8 @@ services:
       service: microfrontend
     working_dir: '/edx/app/frontend-app-program-console'
     container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.frontend-app-program-console"
+    environment:
+      PARAGON_BRAND_PACKAGE: '@edx/brand-edx.org@1.x'
     networks:
       default:
         aliases:
@@ -1042,6 +1064,8 @@ services:
       service: microfrontend
     working_dir: '/edx/app/frontend-app-publisher'
     container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.frontend-app-publisher"
+    environment:
+      PARAGON_BRAND_PACKAGE: '@edx/brand-edx.org@2.x'
     networks:
       default:
         aliases:
