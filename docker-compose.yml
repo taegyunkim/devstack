@@ -955,6 +955,11 @@ services:
     environment:
       DJANGO_SETTINGS_MODULE: designer.settings.devstack
       ENABLE_DJANGO_TOOLBAR: 1
+      DB_HOST: "edx.devstack.mysql80"
+      DB_NAME: "designer"
+      DB_PASSWORD: "password"
+      DB_PORT: "3306"
+      DB_USER: "designer001"
 
   frontend-app-profile:
     extends:
