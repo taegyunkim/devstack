@@ -30,5 +30,4 @@ docker compose exec -T ${name}  bash -e -c -c "echo 'from django.contrib.auth im
 ./provision-ida-user.sh ${name} ${name} ${port}
 
 # Restart designer app
-docker compose restart designer
-
+make dev.restart-devserver.designer
