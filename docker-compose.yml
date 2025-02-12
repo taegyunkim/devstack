@@ -453,15 +453,13 @@ services:
       - edxapp_lms_assets:/edx/var/edxapp/staticfiles/
 
   datadog-agent:
+    container_name: "datadog-agent"
     image: datadog/agent:latest
-    env_file:
-      - docker.env
+    pid: "host"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /proc/:/host/proc/:ro
       - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
-    ports:
-      - 127.0.0.1:8126:8126/tcp
     environment:
       - DD_APM_ENABLED=true
       - DD_APM_NON_LOCAL_TRAFFIC=true
@@ -469,8 +467,14 @@ services:
       - DD_AC_EXCLUDE=name:datadog-agent
       - DD_HOSTNAME=lms-debugging
       - DD_SITE=datadoghq.com
+      - DD_API_KEY=${DD_API_KEY}
+    networks:
+      default:
+        aliases:
+          - datadog-agent
 
   full-host-profiler:
+    container_name: "full-host-profiler"
     image: ghcr.io/datadog/dd-otel-host-profiler:latest
     privileged: true
     pid: "host"
@@ -480,12 +484,18 @@ services:
       - DD_TRACE_AGENT_URL=http://datadog-agent:8126
       - DD_HOST_PROFILING_TIMELINE_ENABLED=true
       - DD_TAGS="stack:v2"
+      - DD_API_KEY=${DD_API_KEY}
+      - DD_APP_KEY=${DD_APP_KEY}
     cap_add:
       - SYS_ADMIN
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     depends_on:
       - datadog-agent
+    networks:
+      default:
+        aliases:
+          - full-host-profiler
 
   lms-worker:
     command: bash -c 'source /edx/app/edxapp/edxapp_env && cd /edx/app/edxapp/edx-platform && celery --app=lms.celery:APP worker -l debug -c 2'
