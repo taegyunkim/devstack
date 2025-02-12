@@ -49,7 +49,6 @@ services:
     volumes:
       - ${DEVSTACK_WORKSPACE}/portal-designer:/edx/app/designer
       - ${PWD}/py_configuration_files/portal_designer.py:/edx/app/designer/designer/settings/devstack.py
-      - ${PWD}/py_configuration_files/registrar.py:/edx/app/registrar/registrar/registrar/settings/devstack.py
   registrar-worker:
     volumes:
       - ${DEVSTACK_WORKSPACE}/registrar:/edx/app/registrar

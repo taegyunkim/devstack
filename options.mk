@@ -61,13 +61,13 @@ ALWAYS_CACHE_PROGRAMS ?= false
 #       The current value was chosen such that it would not change the existing
 #       Devstack behavior.
 DEFAULT_SERVICES ?= \
-credentials+discovery+ecommerce+edx_notes_api+forum+frontend-app-authn+frontend-app-gradebook+frontend-app-payment+frontend-app-publisher+frontend-app-learning+lms+cms+designer
+credentials+discovery+ecommerce+edx_notes_api+forum+frontend-app-authn+frontend-app-gradebook+frontend-app-payment+frontend-app-publisher+frontend-app-learning+lms+cms
 
 # All edX services, whether or not they are run by default.
 # Separated by plus signs.
 # Separated by plus signs. Listed in alphabetical order for clarity.
 EDX_SERVICES ?= \
-analyticsapi+codejail+credentials+cms+cms-worker+cms_watcher+discovery+ecommerce+edx_notes_api+forum+frontend-app-account+frontend-app-learner-dashboard+frontend-app-learner-record+frontend-app-profile+frontend-app-authn+frontend-app-course-authoring+frontend-app-gradebook+frontend-app-ora-grading+frontend-app-learning+frontend-app-library-authoring+frontend-app-payment+frontend-app-program-console+frontend-app-publisher+insights+lms+lms-worker+lms_watcher+registrar+registrar-worker+xqueue+xqueue_consumer+enterprise-catalog+license-manager
+analyticsapi+codejail+credentials+cms+cms-worker+cms_watcher+discovery+ecommerce+edx_notes_api+forum+frontend-app-account+frontend-app-learner-dashboard+frontend-app-learner-record+frontend-app-profile+frontend-app-authn+frontend-app-course-authoring+frontend-app-gradebook+frontend-app-ora-grading+frontend-app-learning+frontend-app-library-authoring+frontend-app-payment+frontend-app-program-console+frontend-app-publisher+insights+lms+lms-worker+lms_watcher+registrar+registrar-worker+xqueue+xqueue_consumer+enterprise-catalog+license-manager+designer
 
 # Services with database migrations.
 # Should be a subset of $(EDX_SERVICES).

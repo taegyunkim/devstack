@@ -875,6 +875,7 @@ services:
   designer:
     image: edxops/designer-dev:latest
     container_name: edx.devstack.designer
+    hostname: designer.devstack.edx
     volumes:
       - .:/edx/app/designer
     command: bash -c 'while true; do python /edx/app/designer/manage.py runserver 0.0.0.0:18808; sleep 2; done'
@@ -885,7 +886,7 @@ services:
     networks:
       default:
         aliases:
-          - edx.devstack.xqueue
+          - edx.devstack.designer
     stdin_open: true
     tty: true
     environment:

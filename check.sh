@@ -132,6 +132,12 @@ if should_check edx_notes_api; then
         "curl --fail -L http://localhost:18120/heartbeat"
 fi
 
+if should_check designer; then
+    echo "Checking designer health:"
+    run_check designer_heartbeat designer \
+        "curl --fail -L http://localhost:18808/health/"
+fi
+
 if should_check credentials; then
     echo "Checking credentials heartbeat:"
     run_check credentials_heartbeat credentials \
