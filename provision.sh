@@ -51,6 +51,7 @@ insights \
 analyticsapi \
 enterprise-catalog \
 license-manager \
+designer \
 enterprise-access \
  "
 
