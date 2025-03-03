@@ -732,7 +732,7 @@ services:
     ports:
       - "18030:8080"
     security_opt:
-      - apparmor=codejail_service
+      - apparmor=openedx_codejail_service
 
   xqueue:
     container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.xqueue"
