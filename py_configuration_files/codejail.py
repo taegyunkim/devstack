@@ -21,9 +21,11 @@ CODE_JAIL = {
     'limits': {
         # CPU-seconds
         'CPU': 3,
-        # 100 MiB memory
-        'VMEM': 100 * 1024 * 1024,
         # Clock seconds
         'REALTIME': 3,
+        # 100 MiB memory
+        'VMEM': 100 * 1024 * 1024,
+        # 1 MB file write limit
+        'FSIZE': 1 * 1024 * 1024,
     },
 }
