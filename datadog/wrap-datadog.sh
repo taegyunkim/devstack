@@ -9,5 +9,20 @@ export DD_PROFILING_ENABLED=true
 export DD_PROFILING_STACK_V2_ENABLED=true
 export DD_PROFILING_TIMELINE_ENABLED=true
 
-#ddprof --service lms-debug-native-v1 --preset cpu_live_heap --tags stack:v2-maxf --timeline --inlined_functions true ddtrace-run "$@"
-ddtrace-run "$@"
+# variant:vanilla
+ddprof --service lms-ddprof --tags=variant:vanilla --preset cpu_live_heap --timeline --inlined_functions true "$@"
+
+# variant:dd
+# DD_PROFILING_ENABLED=false ddprof --service lms-ddprof --tags=variant:dd --preset cpu_live_heap --timeline --inlined_functions true ddtrace-run "$@"
+
+# variant:v1
+# DD_PROFILING_STACK_V2_ENABLED=false ddprof --service lms-ddprof --tags=variant:v1 --preset cpu_live_heap --timeline --inlined_functions true ddtrace-run "$@"
+
+# variant:v2
+# ddprof --service lms-ddprof --tags=variant:v2 --preset cpu_live_heap --timeline --inlined_functions true ddtrace-run "$@"
+
+# variant:v2-patched
+# ddprof --service lms-ddprof --tags=variant:v2-patched --preset cpu_live_heap --timeline --inlined_functions true ddtrace-run "$@"
+
+#ddtrace-run "$@"
+#"$@"
