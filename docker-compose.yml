@@ -419,7 +419,7 @@ services:
       - mysql80
       - mysql57
       - datadog-agent
-        # - full-host-profiler
+      - full-host-profiler
     # Allows attachment to the LMS service using 'docker attach <containerID>'.
     stdin_open: true
     tty: true
@@ -473,29 +473,29 @@ services:
         aliases:
           - datadog-agent
 
-            #   full-host-profiler:
-            #     container_name: "full-host-profiler"
-            #     image: ghcr.io/datadog/dd-otel-host-profiler:latest
-            #     privileged: true
-            #     pid: "host"
-            #     environment:
-            #       - DD_SITE=datadoghq.com
-            #       - DD_SERVICE=lms-debug
-            #       - DD_TRACE_AGENT_URL=http://datadog-agent:8126
-            #       - DD_HOST_PROFILING_TIMELINE_ENABLED=true
-            #       - DD_TAGS="stack:v2"
-            #       - DD_API_KEY=${DD_API_KEY}
-            #       - DD_APP_KEY=${DD_APP_KEY}
-            #     cap_add:
-            #       - SYS_ADMIN
-            #     volumes:
-            #       - /var/run/docker.sock:/var/run/docker.sock:ro
-            #     depends_on:
-            #       - datadog-agent
-            #     networks:
-            #       default:
-            #         aliases:
-            #           - full-host-profiler
+  full-host-profiler:
+    container_name: "full-host-profiler"
+    image: ghcr.io/datadog/dd-otel-host-profiler:latest
+    privileged: true
+    pid: "host"
+    environment:
+      - DD_SITE=datadoghq.com
+      - DD_SERVICE=lms-dd-full-host
+      - DD_TRACE_AGENT_URL=http://datadog-agent:8126
+      - DD_HOST_PROFILING_TIMELINE_ENABLED=true
+      - DD_TAGS="variant:vanilla"
+      - DD_API_KEY=${DD_API_KEY}
+      - DD_APP_KEY=${DD_APP_KEY}
+    cap_add:
+      - SYS_ADMIN
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    depends_on:
+      - datadog-agent
+    networks:
+      default:
+        aliases:
+          - full-host-profiler
 
   lms-worker:
     command: bash -c 'source /edx/app/edxapp/edxapp_env && cd /edx/app/edxapp/edx-platform && celery --app=lms.celery:APP worker -l debug -c 2'
