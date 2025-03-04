@@ -34,7 +34,7 @@ abi <abi/3.0>,
 # the outer one is going to help. But there may be some small value in
 # defense-in-depth, as it's possible that a bug in the codejail_sandbox (inner)
 # profile isn't present in the outer one.
-profile codejail_service flags=(mediate_deleted) {
+profile openedx_codejail_service flags=(mediate_deleted) {
 
     # Allow access to a variety of commonly needed, generally safe things
     # (such as reading /dev/random, free memory, etc.)
@@ -60,7 +60,7 @@ profile codejail_service flags=(mediate_deleted) {
 
     # Allow sending a kill signal to the codejail_sandbox subprofile when the execution
     # runs beyond time limits.
-    signal (send) set=(kill) peer=codejail_service//codejail_sandbox,
+    signal (send) set=(kill) peer=openedx_codejail_service//codejail_sandbox,
 
     # The core of the confinement: When the sandbox Python is executed, switch to
     # the (extremely constrained) codejail_sandbox profile.
@@ -108,6 +108,6 @@ profile codejail_service flags=(mediate_deleted) {
 
         # Allow receiving a kill signal from the webapp when the execution
         # runs beyond time limits.
-        signal (receive) set=(kill) peer=codejail_service,
+        signal (receive) set=(kill) peer=openedx_codejail_service,
     }
 }
