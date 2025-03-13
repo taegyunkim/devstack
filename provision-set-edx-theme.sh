@@ -2,7 +2,7 @@
 
 # This script sets up the edX theme in LMS and CMS.
 
-REPO_URL="https://github.com/edx/edx-themes"
+REPO_URL="git@github.com:edx/edx-themes.git"
 THEME_DIR="/edx/src/edx-themes/edx-platform"
 DEVSTACK_FILE="../edx-platform/lms/envs/devstack.py"
 
@@ -24,7 +24,7 @@ sed -i '' "/COMPREHENSIVE_THEME_DIRS = \[/a\\
 \"$THEME_DIR\",
 " "$DEVSTACK_FILE"
 sed -i '' "s|^# \]|]|" "$DEVSTACK_FILE"
-sed -i '' "s|^# TEMPLATES\[1\]\[\"DIRS\"\] = _make_mako_template_dirs|TEMPLATES[1][\"DIRS\"] = _make_mako_template_dirs|" "$DEVSTACK_FILE"
+sed -i '' "s|^# TEMPLATES\[1\]\[\"DIRS\"\] = Derived(_make_mako_template_dirs)|TEMPLATES[1][\"DIRS\"] = Derived(_make_mako_template_dirs)|" "$DEVSTACK_FILE"
 sed -i '' "s|^# derive_settings(__name__)|derive_settings(__name__)|" "$DEVSTACK_FILE"
 
 
