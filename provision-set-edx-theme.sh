@@ -4,7 +4,7 @@
 
 REPO_URL="git@github.com:edx/edx-themes.git"
 THEME_DIR="/edx/src/edx-themes/edx-platform"
-DEVSTACK_FILE="../edx-platform/lms/envs/devstack.py"
+DEVSTACK_FILE="./py_configuration_files/lms.py"
 
 # Clone the edx-themes repository into the src directory
 cd ../src
