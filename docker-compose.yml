@@ -561,7 +561,7 @@ services:
       - ${PWD}/configuration_files/insights.yml:/edx/etc/insights.yml
 
   analyticsapi:
-    image: edxops/analytics-api-dev:latest
+    image: edxops/edx-analytics-data-api-dev:latest
     container_name: edx.devstack.analyticsapi
     hostname: analyticsapi
     depends_on:
