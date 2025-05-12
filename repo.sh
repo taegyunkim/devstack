@@ -164,6 +164,11 @@ _clone ()
             fi
             if [ "${SHALLOW_CLONE}" == "1" ]; then
                 git clone ${CLONE_BRANCH} -c core.symlinks=true --depth=1 "${repo}"
+                # Set up developers for success by tracking all remote branches, otherwise remote branches
+                # cannot be checked-out. This only edits a text file, so it adds negligible time.
+                pushd "${name}"
+                git remote set-branches origin '*'
+                popd
             else
                 git clone ${CLONE_BRANCH} -c core.symlinks=true "${repo}"
             fi
