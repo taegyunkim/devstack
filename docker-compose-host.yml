@@ -24,10 +24,12 @@ services:
     volumes:
       - ${DEVSTACK_WORKSPACE}/enterprise-access:/edx/app/enterprise-access/
       - ${DEVSTACK_WORKSPACE}/src:/edx/src
-      - ${PWD}/py_configuration_files/enterprise_access.py:/edx/app/enterprise-access/license_manager/settings/devstack.py
+      - ${PWD}/py_configuration_files/enterprise_access.py:/edx/app/enterprise-access/enterprise_access/settings/devstack.py
   enterprise-access-worker:
     volumes:
       - ${DEVSTACK_WORKSPACE}/enterprise-access:/edx/app/enterprise-access/
+      - ${DEVSTACK_WORKSPACE}/src:/edx/src
+      - ${PWD}/py_configuration_files/enterprise_access.py:/edx/app/enterprise-access/enterprise_access/settings/devstack.py
   forum:
     volumes:
       - ${DEVSTACK_WORKSPACE}/cs_comments_service:/edx/app/forum/cs_comments_service
@@ -98,15 +100,15 @@ services:
 
   enterprise-catalog:
     volumes:
-      - ${DEVSTACK_WORKSPACE}/enterprise-catalog:/edx/app/enterprise_catalog/enterprise_catalog
-      - ${PWD}/py_configuration_files/enterprise_catalog.py:/edx/app/enterprise_catalog/enterprise_catalog/settings/devstack.py
+      - ${DEVSTACK_WORKSPACE}/enterprise-catalog:/edx/app/enterprise-catalog
+      - ${PWD}/py_configuration_files/enterprise_catalog.py:/edx/app/enterprise-catalog/enterprise_catalog/settings/devstack.py
   enterprise-catalog-worker:
     volumes:
-      - ${DEVSTACK_WORKSPACE}/enterprise-catalog:/edx/app/enterprise_catalog/enterprise_catalog
-      - ${PWD}/py_configuration_files/enterprise_catalog.py:/edx/app/enterprise_catalog/enterprise_catalog/settings/devstack.py
+      - ${DEVSTACK_WORKSPACE}/enterprise-catalog:/edx/app/enterprise-catalog
+      - ${PWD}/py_configuration_files/enterprise_catalog.py:/edx/app/enterprise-catalog/enterprise_catalog/settings/devstack.py
   enterprise-catalog-curations-worker:
     volumes:
-      - ${DEVSTACK_WORKSPACE}/enterprise-catalog:/edx/app/enterprise_catalog/enterprise_catalog
+      - ${DEVSTACK_WORKSPACE}/enterprise-catalog:/edx/app/enterprise-catalog
   license-manager:
     volumes:
       - ${DEVSTACK_WORKSPACE}/license-manager:/edx/app/license_manager

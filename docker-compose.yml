@@ -744,7 +744,7 @@ services:
     image: edxops/enterprise-catalog-dev
     container_name: edx.devstack.enterprise-catalog
     hostname: enterprise-catalog.devstack.edx
-    command: bash -c 'while true; do python /edx/app/enterprise_catalog/enterprise_catalog/manage.py runserver 0.0.0.0:18160; sleep 2; done'
+    command: bash -c 'while true; do python /edx/app/enterprise-catalog/manage.py runserver 0.0.0.0:18160; sleep 2; done'
     ports:
       - "18160:18160"
     depends_on:
@@ -774,9 +774,10 @@ services:
 
   enterprise-catalog-worker:
     image: edxops/enterprise-catalog-dev
-    command: bash -c 'cd /edx/app/enterprise_catalog/enterprise_catalog && celery -A enterprise_catalog worker -Q enterprise_catalog.default -l DEBUG'
+    command: bash -c 'cd /edx/app/enterprise-catalog && celery -A enterprise_catalog worker -Q enterprise_catalog.default -l DEBUG'
     container_name: edx.devstack.enterprise.catalog.worker
     depends_on:
+      - memcached
       - mysql80
     environment:
       CELERY_ALWAYS_EAGER: 'false'
@@ -796,7 +797,7 @@ services:
 
   enterprise-catalog-curations-worker:
     image: edxops/enterprise-catalog-dev
-    command: bash -c 'cd /edx/app/enterprise_catalog/enterprise_catalog && celery -A enterprise_catalog worker -Q enterprise_catalog.curations -l DEBUG'
+    command: bash -c 'cd /edx/app/enterprise-catalog && celery -A enterprise_catalog worker -Q enterprise_catalog.curations -l DEBUG'
     container_name: enterprise.catalog.curations
     depends_on:
       - mysql80
