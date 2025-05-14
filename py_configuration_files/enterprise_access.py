@@ -4,9 +4,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': os.environ.get('DB_NAME', 'enterprise_access'),
-        'USER': os.environ.get('DB_USER', 'root'),
-        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
-        'HOST': os.environ.get('DB_HOST', 'enterprise_access.mysql80'),
+        'USER': os.environ.get('DB_USER', 'enterprise_access001'),
+        'PASSWORD': os.environ.get('DB_PASSWORD', 'password'),
+        'HOST': os.environ.get('DB_HOST', 'edx.devstack.mysql80'),
         'PORT': os.environ.get('DB_PORT', 3306),
         'ATOMIC_REQUESTS': False,
         'CONN_MAX_AGE': 60,
@@ -17,7 +17,7 @@ DATABASES = {
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.memcached.PyMemcacheCache',
-        'LOCATION': 'enterprise_access.memcache:11211',
+        'LOCATION': 'edx.devstack.memcached:11211',
     }
 }
 
@@ -26,8 +26,8 @@ CACHES = {
 OAUTH2_PROVIDER_URL = 'http://edx.devstack.lms:18000/oauth2'
 
 # OAuth2 variables specific to social-auth/SSO login use case.
-SOCIAL_AUTH_EDX_OAUTH2_KEY = os.environ.get('SOCIAL_AUTH_EDX_OAUTH2_KEY', 'enterprise_access-sso-key')
-SOCIAL_AUTH_EDX_OAUTH2_SECRET = os.environ.get('SOCIAL_AUTH_EDX_OAUTH2_SECRET', 'enterprise_access-sso-secret')
+SOCIAL_AUTH_EDX_OAUTH2_KEY = os.environ.get('SOCIAL_AUTH_EDX_OAUTH2_KEY', 'enterprise-access-sso-key')
+SOCIAL_AUTH_EDX_OAUTH2_SECRET = os.environ.get('SOCIAL_AUTH_EDX_OAUTH2_SECRET', 'enterprise-access-sso-secret')
 SOCIAL_AUTH_EDX_OAUTH2_ISSUER = os.environ.get('SOCIAL_AUTH_EDX_OAUTH2_ISSUER', 'http://localhost:18000')
 SOCIAL_AUTH_EDX_OAUTH2_URL_ROOT = os.environ.get('SOCIAL_AUTH_EDX_OAUTH2_URL_ROOT', 'http://edx.devstack.lms:18000')
 SOCIAL_AUTH_EDX_OAUTH2_LOGOUT_URL = os.environ.get('SOCIAL_AUTH_EDX_OAUTH2_LOGOUT_URL', 'http://localhost:18000/logout')
@@ -37,9 +37,9 @@ SOCIAL_AUTH_EDX_OAUTH2_PUBLIC_URL_ROOT = os.environ.get(
 
 # OAuth2 variables specific to backend service API calls.
 BACKEND_SERVICE_EDX_OAUTH2_KEY = os.environ.get(
-    'BACKEND_SERVICE_EDX_OAUTH2_KEY', 'enterprise_access-backend-service-key')
+    'BACKEND_SERVICE_EDX_OAUTH2_KEY', 'enterprise-access-backend-service-key')
 BACKEND_SERVICE_EDX_OAUTH2_SECRET = os.environ.get(
-    'BACKEND_SERVICE_EDX_OAUTH2_SECRET', 'enterprise_access-backend-service-secret')
+    'BACKEND_SERVICE_EDX_OAUTH2_SECRET', 'enterprise-access-backend-service-secret')
 
 JWT_AUTH.update({
     'JWT_SECRET_KEY': 'lms-secret',
@@ -91,13 +91,13 @@ CSRF_TRUSTED_ORIGINS = [
 # END CSRF CONFIG
 
 ECOMMERCE_URL = 'http://edx.devstack.ecommerce:18130'
-LICENSE_MANAGER_URL = 'http://license-manager.app:18170'
+LICENSE_MANAGER_URL = 'http://edx.devstack.license-manager:18170'
 LMS_URL = 'http://edx.devstack.lms:18000'
 DISCOVERY_URL = 'http://edx.devstack.discovery:18381'
 ENTERPRISE_LEARNER_PORTAL_URL = 'http://localhost:8734'
 ENTERPRISE_ADMIN_PORTAL_URL = 'http://localhost:1991'
-ENTERPRISE_CATALOG_URL = 'http://enterprise.catalog.app:18160'
-ENTERPRISE_SUBSIDY_URL = 'http://enterprise-subsidy.app:18280'
+ENTERPRISE_CATALOG_URL = 'http://edx.devstack.enterprise-catalog:18160'
+ENTERPRISE_SUBSIDY_URL = 'http://edx.devstack.enterprise-subsidy:18280'
 ENTERPRISE_ACCESS_URL = 'http://localhost:18270'
 
 # shell_plus

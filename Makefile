@@ -406,7 +406,7 @@ dev.shell.insights:
 	docker compose exec insights env TERM=$(TERM) bash -c 'eval $$(source /edx/app/insights/insights_env; echo PATH="$$PATH";) && /bin/bash'
 
 dev.shell.%: ## Run a shell on the specified service's container.
-	docker compose exec $* /bin/bash
+	docker compose exec -u 0 $* /bin/bash
 
 dev.dbshell:
 	docker compose exec mysql80 bash -c "mysql"
