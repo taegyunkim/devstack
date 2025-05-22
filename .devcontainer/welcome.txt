@@ -18,20 +18,7 @@ Initial Setup
 
    https://marketplace.visualstudio.com/items/?itemName=GitHub.codespaces
 
-Usage
-=====
-
-Start your day by connecting to this workspace from VS Code and start up
-services from a terminal:
-
-  make dev.up
-
-Important directories:
-
-* /workspaces/devstack - This is the main devstack repository.
-* /workspaces/devstack/edx-repos/* - Individual edx service repository clones.
-
 More Info
 =========
 
-* https://2u-internal.atlassian.net/wiki/spaces/SOL/pages/2003370007/Devstack+on+Codespaces+Guide
+https://2u-internal.atlassian.net/wiki/spaces/ENG/pages/2003370007/Devstack+on+Codespaces+Guide
