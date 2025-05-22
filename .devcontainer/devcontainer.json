@@ -14,7 +14,9 @@
         "codespaces": {
             "repositories": {
                 "edx/edx-themes": {
-                    "permissions": "read-all"
+                    "permissions": {
+                        "contents": "read"
+                    }
                 }
             }
         }
