@@ -638,7 +638,7 @@ services:
 
   cms:
     # Switch to `--settings devstack_with_worker` if you want to use cms-worker
-    command: bash -c 'source /edx/app/edxapp/edxapp_env && (pip install -r /edx/private_requirements.txt; while true; do python /edx/app/edxapp/edx-platform/manage.py lms runserver 0.0.0.0:18000 --settings devstack; sleep 2; done)'
+    command: bash -c 'source /edx/app/edxapp/edxapp_env && (pip install -r /edx/private_requirements.txt; while true; do python /edx/app/edxapp/edx-platform/manage.py cms runserver 0.0.0.0:18010 --settings devstack; sleep 2; done)'
     container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.cms"
     hostname: cms.devstack.edx
     depends_on:
