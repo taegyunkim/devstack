@@ -8,9 +8,9 @@ export DD_TRACE_REMOVE_INTEGRATION_SERVICE_NAMES_ENABLED=true
 export DD_PROFILING_ENABLED=true
 export DD_PROFILING_STACK_V2_ENABLED=true
 export DD_PROFILING_TIMELINE_ENABLED=true
-export DD_PROFILING_TAGS=variant:py-spy
+export DD_PROFILING_TAGS=variant:3.8.0
 export DD_PROFILING_MEMORY_ENABLED=false
-export DD_PROFILING_MAX_FRAMES=512
+# export DD_PROFILING_MAX_FRAMES=512
 # export _DD_PROFILING_STACK_V2_ADAPTIVE_SAMPLING_ENABLED=true
 
 # variant:vanilla
@@ -38,8 +38,8 @@ export DD_PROFILING_MAX_FRAMES=512
 #ddprof --service lms-ddprof --tags=variant:sigtrap-clock --preset cpu_live_heap --timeline --inlined_functions true ddtrace-run "$@"
 
 
-# ddprof --service lms-ddprof --tags=variant:3.7.0-dev28-memoff --preset cpu_live_heap --timeline --inlined_functions true ddtrace-run "$@"
+ddprof --service lms-ddprof --tags=variant:3.8.0 --preset cpu_live_heap --timeline --inlined_functions true ddtrace-run "$@"
 #"$@"
 
 
-ddprof --service lms-ddprof --tags=variant:py-spy --preset cpu_live_heap --timeline --inlined_functions true py-spy top --subprocesses --nonblocking -- "$@"
+# ddprof --service lms-ddprof --tags=variant:py-spy --preset cpu_live_heap --timeline --inlined_functions true py-spy top --subprocesses --nonblocking -- "$@"
