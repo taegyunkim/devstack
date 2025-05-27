@@ -16,9 +16,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': os.environ.get('DB_NAME', 'enterprise_subsidy'),
-        'USER': os.environ.get('DB_USER', 'root'),
-        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
-        'HOST': os.environ.get('DB_HOST', 'enterprise-subsidy.mysql80'),
+        'USER': os.environ.get('DB_USER', 'subsidy001'),
+        'PASSWORD': os.environ.get('DB_PASSWORD', 'password'),
+        'HOST': os.environ.get('DB_HOST', 'edx.devstack.mysql80'),
         'PORT': os.environ.get('DB_PORT', 3306),
         'ATOMIC_REQUESTS': False,
         'CONN_MAX_AGE': 60,
@@ -28,14 +28,10 @@ DATABASES = {
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.memcached.PyMemcacheCache',
-        'LOCATION': 'enterprise-subsidy.memcache:11211',
+        'LOCATION': 'edx.devstack.memcached:11211',
     }
 
 }
-
-INSTALLED_APPS += (
-    'edx_event_bus_kafka',
-)
 
 # Generic OAuth2 variables irrespective of SSO/backend service key types.
 OAUTH2_PROVIDER_URL = 'http://edx.devstack.lms:18000/oauth2'
@@ -77,12 +73,13 @@ JWT_AUTH.update({
 })
 
 LMS_URL = 'http://edx.devstack.lms:18000'
-ENTERPRISE_CATALOG_URL = 'http://enterprise.catalog.app:18160'
+ENTERPRISE_CATALOG_URL = 'http://edx.devstack.enterprise-catalog:18160'
 ENTERPRISE_SUBSIDY_URL = 'http://localhost:18280'
 FRONTEND_APP_LEARNING_URL = 'http://localhost:2000'
 
 # Kafka Settings
 # "Standard" Kafka settings as defined in https://github.com/openedx/event-bus-kafka/tree/main
+INSTALLED_APPS += ('edx_event_bus_kafka',)
 EVENT_BUS_KAFKA_SCHEMA_REGISTRY_URL = 'http://edx.devstack.schema-registry:8081'
 EVENT_BUS_KAFKA_BOOTSTRAP_SERVERS = 'edx.devstack.kafka:29092'
 EVENT_BUS_PRODUCER = 'edx_event_bus_kafka.create_producer'

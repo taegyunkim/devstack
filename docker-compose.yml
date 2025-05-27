@@ -186,23 +186,6 @@ services:
       - mongo_data:/data/db
       - mongo_config_data:/data/configdb
 
-  mysql57:
-    command: mysqld --character-set-server=utf8 --collation-server=utf8_general_ci
-    container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.mysql57"
-    hostname: mysql57.devstack.edx
-    environment:
-      MYSQL_ROOT_PASSWORD: ""
-      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-    image: edxops/mysql:5.7
-    networks:
-      default:
-        aliases:
-          - edx.devstack.mysql57
-    ports:
-      - "3506:3306"
-    volumes:
-      - mysql57_data:/var/lib/mysql
-
   mysql80:
     command: mysqld --character-set-server=utf8 --collation-server=utf8_general_ci
     container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.mysql80"
@@ -280,7 +263,6 @@ services:
       - lms
       - memcached
       - mysql80
-      - mysql57
     # Allows attachment to the credentials service using 'docker attach <containerID>'.
     stdin_open: true
     tty: true
@@ -306,7 +288,6 @@ services:
       - elasticsearch710
       - memcached
       - mysql80
-      - mysql57
       - opensearch12
       - redis
     # Allows attachment to the discovery service using 'docker attach <containerID>'.
@@ -339,7 +320,6 @@ services:
       - lms
       - memcached
       - mysql80
-      - mysql57
     # Allows attachment to the ecommerce service using 'docker attach <containerID>'.
     stdin_open: true
     tty: true
@@ -366,7 +346,6 @@ services:
       - elasticsearch710
       - lms
       - mysql80
-      - mysql57
     image: edxops/edx-notes-api-dev:latest
     networks:
       default:
@@ -385,6 +364,69 @@ services:
       ENABLE_DJANGO_TOOLBAR: 1
       ELASTICSEARCH_URL: "http://edx.devstack.elasticsearch710:9200"
       ELASTICSEARCH_DSL: "http://edx.devstack.elasticsearch710:9200"
+
+  enterprise-access:
+    image: edxops/enterprise-access-dev
+    container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.enterprise-access"
+    hostname: enterprise-access.devstack.edx
+    command: bash -c 'while true; do python /edx/app/enterprise-access/manage.py runserver 0.0.0.0:18270; sleep 2; done'
+    ports:
+      - "18270:18270"
+    depends_on:
+      - mysql80
+      - memcached
+      - enterprise-access-worker
+    networks:
+      default:
+        aliases:
+          - edx.devstack.enterprise-access
+    stdin_open: true
+    tty: true
+    environment:
+      CELERY_ALWAYS_EAGER: 'false'
+      CELERY_BROKER_TRANSPORT: redis
+      CELERY_BROKER_HOSTNAME: edx.devstack.redis:6379
+      CELERY_BROKER_VHOST: 0
+      CELERY_BROKER_PASSWORD: password
+      DJANGO_SETTINGS_MODULE: enterprise_access.settings.devstack
+      DJANGO_WATCHMAN_TIMEOUT: 30
+      ENABLE_DJANGO_TOOLBAR: 1
+      DB_HOST: edx.devstack.mysql80
+      DB_NAME: enterprise_access
+      DB_PORT: 3306
+      DB_USER: enterprise_access001
+      DB_PASSWORD: password
+
+  enterprise-access-worker:
+    image: edxops/enterprise-access-dev
+    command: bash -c 'cd /edx/app/enterprise-access/ && celery -A enterprise_access worker -l DEBUG'
+    container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.enterprise-access-worker"
+    hostname: enterprise-access-worker.devstack.edx
+    depends_on:
+      - mysql80
+      - memcached
+    environment:
+      CELERY_ALWAYS_EAGER: 'false'
+      CELERY_BROKER_TRANSPORT: redis
+      CELERY_BROKER_HOSTNAME: edx.devstack.redis:6379
+      CELERY_BROKER_VHOST: 0
+      CELERY_BROKER_PASSWORD: password
+      DJANGO_SETTINGS_MODULE: enterprise_access.settings.devstack
+      COLUMNS: 80
+      DB_HOST: edx.devstack.mysql80
+      DB_NAME: enterprise_access
+      DB_PORT: 3306
+      DB_USER: enterprise_access001
+      DB_PASSWORD: password
+    networks:
+      default:
+        aliases:
+          - edx.devstack.enterprise-access-worker
+    ports:
+      - "18271:18271"
+    restart: always
+    stdin_open: true
+    tty: true
 
   forum:
     command: bash -c 'source /edx/app/forum/ruby_env && source /edx/app/forum/devstack_forum_env && cd /edx/app/forum/cs_comments_service && bundle install && while true; do ./bin/unicorn -c config/unicorn_tcp.rb -I .; sleep 2; done'
@@ -408,6 +450,7 @@ services:
   lms:
     # Switch to `--settings devstack_with_worker` if you want to use lms-worker
     command: cat
+    # command: bash -c 'source /edx/app/edxapp/edxapp_env && (pip install -r /edx/private_requirements.txt; while true; do python /edx/app/edxapp/edx-platform/manage.py lms runserver 0.0.0.0:18000 --settings devstack; sleep 2; done)'
     container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.lms"
     hostname: lms.devstack.edx
     depends_on:
@@ -417,7 +460,6 @@ services:
       - memcached
       - mongo
       - mysql80
-      - mysql57
       - datadog-agent
       - full-host-profiler
     # Allows attachment to the LMS service using 'docker attach <containerID>'.
@@ -507,7 +549,6 @@ services:
     hostname: lms-worker.devstack.edx
     depends_on:
       - mysql80
-      - mysql57
       - redis
     stdin_open: true
     tty: true
@@ -524,7 +565,6 @@ services:
     depends_on:
       - analyticsapi
       - mysql80
-      - mysql57
       - lms
       - memcached
     # Allows attachment to the insights service using 'docker attach <containerID>'.
@@ -552,12 +592,11 @@ services:
       - ${PWD}/configuration_files/insights.yml:/edx/etc/insights.yml
 
   analyticsapi:
-    image: edxops/analytics-api-dev:latest
+    image: edxops/edx-analytics-data-api-dev:latest
     container_name: edx.devstack.analyticsapi
     hostname: analyticsapi
     depends_on:
       - mysql80
-      - mysql57
       - elasticsearch710
     command: bash -c 'source /edx/app/analytics_api/analytics_api_env && while true;  do python /edx/app/analytics_api/analytics_api/manage.py runserver 0.0.0.0:19001 --settings analyticsdataserver.settings.devstack; sleep 2; done'
     stdin_open: true
@@ -583,7 +622,6 @@ services:
       - discovery
       - lms
       - mysql80
-      - mysql57
       - memcached
       - redis
       - registrar-worker
@@ -626,7 +664,6 @@ services:
     depends_on:
       - lms
       - mysql80
-      - mysql57
       - redis
     stdin_open: true
     tty: true
@@ -657,6 +694,7 @@ services:
   cms:
     # Switch to `--settings devstack_with_worker` if you want to use cms-worker
     command: cat
+    # command: bash -c 'source /edx/app/edxapp/edxapp_env && (pip install -r /edx/private_requirements.txt; while true; do python /edx/app/edxapp/edx-platform/manage.py cms runserver 0.0.0.0:18010 --settings devstack; sleep 2; done)'
     container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.cms"
     hostname: cms.devstack.edx
     depends_on:
@@ -665,7 +703,6 @@ services:
       - memcached
       - mongo
       - mysql80
-      - mysql57
     # Allows attachment to the CMS service using 'docker attach <containerID>'.
     stdin_open: true
     tty: true
@@ -701,7 +738,6 @@ services:
     hostname: cms-worker.devstack.edx
     depends_on:
       - mysql80
-      - mysql57
       - redis
     stdin_open: true
     tty: true
@@ -710,6 +746,21 @@ services:
       DJANGO_SETTINGS_MODULE: cms.envs.devstack_with_worker
       # Dangerous to run Celery as root normally, but it's how we do things in devstack for some reason
       C_FORCE_ROOT: "true"
+
+  codejail:
+    command: bash -c 'source /venv/bin/activate; while true; do python ./manage.py runserver 0.0.0.0:8080; sleep 2; done'
+    container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.codejail"
+    hostname: codejail.devstack.edx
+    stdin_open: true
+    tty: true
+    image: edxops/codejail-service-dev:latest
+    environment:
+      DJANGO_SETTINGS_MODULE: codejail_service.settings.devstack
+    ports:
+      - "18030:8080"
+    user: app
+    security_opt:
+      - apparmor=openedx_codejail_service
 
   xqueue:
     container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.xqueue"
@@ -721,7 +772,6 @@ services:
       - ${PWD}/configuration_files/xqueue.yml:/edx/etc/xqueue.yml
     depends_on:
       - mysql80
-      - mysql57
     environment:
       XQUEUE_CFG: "/edx/etc/xqueue.yml"
     networks:
@@ -741,11 +791,192 @@ services:
       - ${PWD}/configuration_files/xqueue.yml:/edx/etc/xqueue.yml
     depends_on:
       - mysql80
-      - mysql57
     networks:
       default:
         aliases:
           - edx.devstack.xqueue_consumer
+
+  enterprise-catalog:
+    image: edxops/enterprise-catalog-dev
+    container_name: edx.devstack.enterprise-catalog
+    hostname: enterprise-catalog.devstack.edx
+    command: bash -c 'while true; do python /edx/app/enterprise-catalog/manage.py runserver 0.0.0.0:18160; sleep 2; done'
+    ports:
+      - "18160:18160"
+    depends_on:
+      - memcached
+      - mysql80
+      - enterprise-catalog-worker
+    networks:
+      default:
+          aliases:
+            - edx.devstack.enterprise-catalog
+    # Allows attachment to this container using 'docker attach <containerID>'.
+    stdin_open: true
+    tty: true
+    environment:
+      CELERY_ALWAYS_EAGER: 'false'
+      CELERY_BROKER_TRANSPORT: redis
+      CELERY_BROKER_HOSTNAME: edx.devstack.redis:6379
+      CELERY_BROKER_VHOST: 0
+      CELERY_BROKER_PASSWORD: password
+      DJANGO_SETTINGS_MODULE: enterprise_catalog.settings.devstack
+      ENABLE_DJANGO_TOOLBAR: 1
+      DB_HOST: edx.devstack.mysql80
+      DB_NAME: enterprise_catalog
+      DB_PORT: 3306
+      DB_USER: catalog001
+      DB_PASSWORD: 'password'
+
+  enterprise-catalog-worker:
+    image: edxops/enterprise-catalog-dev
+    command: bash -c 'cd /edx/app/enterprise-catalog && celery -A enterprise_catalog worker -Q enterprise_catalog.default -l DEBUG'
+    container_name: edx.devstack.enterprise.catalog.worker
+    depends_on:
+      - memcached
+      - mysql80
+    environment:
+      CELERY_ALWAYS_EAGER: 'false'
+      CELERY_BROKER_TRANSPORT: redis
+      CELERY_BROKER_HOSTNAME: edx.devstack.redis:6379
+      CELERY_BROKER_VHOST: 0
+      CELERY_BROKER_PASSWORD: password
+      DJANGO_SETTINGS_MODULE: enterprise_catalog.settings.devstack
+      COLUMNS: 80
+    hostname: worker.catalog.enterprise
+    ports:
+      - "18161:18161"
+    restart: always
+    # Allows attachment to this container using 'docker attach <containerID>'.
+    stdin_open: true
+    tty: true
+
+  enterprise-catalog-curations-worker:
+    image: edxops/enterprise-catalog-dev
+    command: bash -c 'cd /edx/app/enterprise-catalog && celery -A enterprise_catalog worker -Q enterprise_catalog.curations -l DEBUG'
+    container_name: enterprise.catalog.curations
+    depends_on:
+      - mysql80
+    environment:
+      CELERY_ALWAYS_EAGER: 'false'
+      CELERY_BROKER_TRANSPORT: redis
+      CELERY_BROKER_HOSTNAME: edx.devstack.redis:6379
+      CELERY_BROKER_VHOST: 0
+      CELERY_BROKER_PASSWORD: password
+      DJANGO_SETTINGS_MODULE: enterprise_catalog.settings.devstack
+      COLUMNS: 80
+    hostname: curations.catalog.enterprise
+    ports:
+      - "18162:18162"
+    restart: always
+    # Allows attachment to this container using 'docker attach <containerID>'.
+    stdin_open: true
+    tty: true
+
+  license-manager:
+    image: edxops/license-manager-dev:latest
+    container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.license-manager"
+    hostname: license-manager.devstack.edx
+    # Use the Django devserver, so that we can hot-reload code changes
+    command: bash -c 'while true; do python /edx/app/license_manager/manage.py runserver 0.0.0.0:18170; sleep 2; done'
+    ports:
+      - "18170:18170"
+    depends_on:
+      - mysql80
+      - license-manager-worker
+    # Allows attachment to this container using 'docker attach <containerID>'.
+    stdin_open: true
+    tty: true
+    environment:
+      CELERY_ALWAYS_EAGER: 'false'
+      CELERY_BROKER_TRANSPORT: redis
+      CELERY_BROKER_HOSTNAME: edx.devstack.redis:6379
+      CELERY_BROKER_VHOST: 0
+      CELERY_BROKER_PASSWORD: password
+      DJANGO_SETTINGS_MODULE: license_manager.settings.devstack
+      DJANGO_WATCHMAN_TIMEOUT: 30
+      ENABLE_DJANGO_TOOLBAR: 1
+
+  license-manager-worker:
+    image: edxops/license-manager-dev:latest
+    command: bash -c 'cd /edx/app/license_manager/license_manager && celery -A license_manager worker -Q license_manager.default -l DEBUG'
+    container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.license-manager-worker"
+    hostname: license-manager-worker.devstack.edx
+    depends_on:
+      - mysql80
+    environment:
+      CELERY_ALWAYS_EAGER: 'false'
+      CELERY_BROKER_TRANSPORT: redis
+      CELERY_BROKER_HOSTNAME: edx.devstack.redis:6379
+      CELERY_BROKER_VHOST: 0
+      CELERY_BROKER_PASSWORD: password
+      DJANGO_SETTINGS_MODULE: license_manager.settings.devstack
+      COLUMNS: 80
+    ports:
+      - "18171:18171"
+    restart: always
+    stdin_open: true
+    tty: true
+
+  bulk-enrollment-worker:
+    image: edxops/license-manager-dev:latest
+    command: bash -c 'cd /edx/app/license_manager/license_manager && celery -A license_manager worker -Q license_manager.bulk_enrollment -l DEBUG'
+    container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.license-manager.bulk-enrollment-worker"
+    hostname: license-manager.bulk-enrollment-worker.devstack.edx
+    depends_on:
+      - mysql80
+    environment:
+      CELERY_ALWAYS_EAGER: 'false'
+      CELERY_BROKER_TRANSPORT: redis
+      CELERY_BROKER_HOSTNAME: edx.devstack.redis:6379
+      CELERY_BROKER_VHOST: 0
+      CELERY_BROKER_PASSWORD: password
+      DJANGO_SETTINGS_MODULE: license_manager.settings.devstack
+      COLUMNS: 80
+    ports:
+      - "18172:18172"
+    restart: always
+    stdin_open: true
+    tty: true
+
+  enterprise-subsidy:
+    image: edxops/enterprise-subsidy-dev
+    container_name: edx.devstack.enterprise-subsidy
+    hostname: enterprise-subsidy.devstack.edx
+    depends_on:
+      - mysql80
+      - memcached
+    command: bash -c 'while true; do python /edx/app/enterprise-subsidy/manage.py runserver 0.0.0.0:18280; sleep 2; done'
+    stdin_open: true
+    tty: true
+    environment:
+      DB_HOST: edx.devstack.mysql80
+      DB_PORT: 3306
+      DB_USER: subsidy001
+      DB_PASSWORD: password
+      DB_NAME: enterprise_subsidy
+      DJANGO_SETTINGS_MODULE: enterprise_subsidy.settings.devstack
+    working_dir: /edx/app/enterprise-subsidy
+    ports:
+      - "18280:18280"
+    volumes:
+      - /edx/var/enterprise-subsidy
+
+  enterprise-subsidy-consume_learner_credit_course_enrollment_lifecycle:
+    image: edxops/enterprise-subsidy-dev
+    container_name: edx.devstack.enterprise-subsidy-consume_learner_credit_course_enrollment_lifecycle
+    depends_on:
+      - mysql80
+      - memcached
+    command: >-
+      bash -c 'while true; do python /edx/app/enterprise-subsidy/manage.py consume_events -t learner-credit-course-enrollment-lifecycle -g enterprise_subsidy_dev; sleep 2; done'
+    tty: true
+    environment:
+      DJANGO_SETTINGS_MODULE: enterprise_subsidy.settings.devstack
+    working_dir: /edx/app/enterprise-subsidy
+    ports:
+      - "18281:18281"
+    stdin_open: true
 
   # ==========================================================================
   # edX Microfrontends
@@ -761,6 +992,8 @@ services:
       service: microfrontend
     working_dir: '/edx/app/frontend-app-account'
     container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.frontend-app-account"
+    environment:
+      PARAGON_BRAND_PACKAGE: '@edx/brand-edx.org@1.x'
     networks:
       default:
         aliases:
@@ -770,12 +1003,40 @@ services:
     depends_on:
       - lms
 
+  designer:
+    image: edxops/designer-dev:latest
+    container_name: edx.devstack.designer
+    hostname: designer.devstack.edx
+    volumes:
+      - .:/edx/app/designer
+    command: bash -c 'while true; do python /edx/app/designer/manage.py runserver 0.0.0.0:18808; sleep 2; done'
+    ports:
+      - "18808:18808"
+    depends_on:
+      - mysql80
+    networks:
+      default:
+        aliases:
+          - edx.devstack.designer
+    stdin_open: true
+    tty: true
+    environment:
+      DJANGO_SETTINGS_MODULE: designer.settings.devstack
+      ENABLE_DJANGO_TOOLBAR: 1
+      DB_HOST: "edx.devstack.mysql80"
+      DB_NAME: "designer"
+      DB_PASSWORD: "password"
+      DB_PORT: "3306"
+      DB_USER: "designer001"
+
   frontend-app-profile:
     extends:
       file: microfrontend.yml
       service: microfrontend
     working_dir: '/edx/app/frontend-app-profile'
     container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.frontend-app-profile"
+    environment:
+      PARAGON_BRAND_PACKAGE: '@edx/brand-edx.org@~2.0.0'
     networks:
       default:
         aliases:
@@ -791,6 +1052,8 @@ services:
       service: microfrontend
     working_dir: '/edx/app/frontend-app-authn'
     container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.frontend-app-authn"
+    environment:
+      PARAGON_BRAND_PACKAGE: '@edx/brand-edx.org@2.x'
     networks:
       default:
         aliases:
@@ -806,6 +1069,8 @@ services:
       service: microfrontend
     working_dir: '/edx/app/frontend-app-course-authoring'
     container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.frontend-app-course-authoring"
+    environment:
+      PARAGON_BRAND_PACKAGE: '@edx/brand-edx.org@2.x'
     networks:
       default:
         aliases:
@@ -836,6 +1101,8 @@ services:
       service: microfrontend
     working_dir: '/edx/app/frontend-app-ora-grading'
     container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.frontend-app-ora-grading"
+    environment:
+      PARAGON_BRAND_PACKAGE: '@edx/brand-edx.org@2.x'
     networks:
       default:
         aliases:
@@ -851,6 +1118,8 @@ services:
       service: microfrontend
     working_dir: '/edx/app/frontend-app-learner-dashboard'
     container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.frontend-app-learner-dashboard"
+    environment:
+      PARAGON_BRAND_PACKAGE: '@edx/brand-edx.org@2.x'
     networks:
       default:
         aliases:
@@ -866,6 +1135,8 @@ services:
       service: microfrontend
     working_dir: '/edx/app/frontend-app-learner-record'
     container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.frontend-app-learner-record"
+    environment:
+      PARAGON_BRAND_PACKAGE: '@edx/brand-edx.org@~2.0.0'
     networks:
       default:
         aliases:
@@ -881,6 +1152,8 @@ services:
       service: microfrontend
     working_dir: '/edx/app/frontend-app-learning'
     container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.frontend-app-learning"
+    environment:
+      PARAGON_BRAND_PACKAGE: '@edx/brand-edx.org@2.x'
     networks:
       default:
         aliases:
@@ -896,6 +1169,8 @@ services:
       service: microfrontend
     working_dir: '/edx/app/frontend-app-library-authoring'
     container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.frontend-app-library-authoring"
+    environment:
+      PARAGON_BRAND_PACKAGE: '@edx/brand-edx.org@2.x'
     networks:
       default:
         aliases:
@@ -912,6 +1187,8 @@ services:
       service: microfrontend
     working_dir: '/edx/app/frontend-app-payment'
     container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.frontend-app-payment"
+    environment:
+      PARAGON_BRAND_PACKAGE: '@edx/brand-edx.org@^2.0.6'
     networks:
       default:
         aliases:
@@ -927,6 +1204,8 @@ services:
       service: microfrontend
     working_dir: '/edx/app/frontend-app-program-console'
     container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.frontend-app-program-console"
+    environment:
+      PARAGON_BRAND_PACKAGE: '@edx/brand-edx.org@1.x'
     networks:
       default:
         aliases:
@@ -943,6 +1222,8 @@ services:
       service: microfrontend
     working_dir: '/edx/app/frontend-app-publisher'
     container_name: "edx.${COMPOSE_PROJECT_NAME:-devstack}.frontend-app-publisher"
+    environment:
+      PARAGON_BRAND_PACKAGE: '@edx/brand-edx.org@2.x'
     networks:
       default:
         aliases:
@@ -961,6 +1242,5 @@ volumes:
   mongo_data:
   mongo_config_data:
   opensearch12_data:
-  mysql57_data:
   mysql80_data:
   redis_data:

@@ -41,6 +41,8 @@ Instead of a service name or list, you can also run commands like ``make dev.pro
 +------------------------------------+-------------------------------------+----------------+--------------+
 | `frontend-app-authn`_              | http://localhost:1999/              | MFE (React.js) | Default      |
 +------------------------------------+-------------------------------------+----------------+--------------+
+| `codejail`_                        | http://localhost:18030/             | Python/Django  | Extra        |
++------------------------------------+-------------------------------------+----------------+--------------+
 | `registrar`_                       | http://localhost:18734/api-docs/    | Python/Django  | Extra        |
 +------------------------------------+-------------------------------------+----------------+--------------+
 | `frontend-app-program-console`_    | http://localhost:1976/              | MFE (React.js) | Extra        |
@@ -61,7 +63,17 @@ Instead of a service name or list, you can also run commands like ``make dev.pro
 +------------------------------------+-------------------------------------+----------------+--------------+
 | `analyticsapi`_                    | http://localhost:19001              | Python/Django  | Extra        |
 +------------------------------------+-------------------------------------+----------------+--------------+
+| `license-manager`_                 | http://localhost:18171              | Python/Django  | Extra        |
++------------------------------------+-------------------------------------+----------------+--------------+
 | `frontend-app-ora-grading`_        | http://localhost:1993               | MFE (React.js) | Extra        |
++------------------------------------+-------------------------------------+----------------+--------------+
+| `designer`_                        | http://localhost:18808              | Python/Django  | Extra        |
++------------------------------------+-------------------------------------+----------------+--------------+
+| `enterprise-catalog`_              | http://localhost:18160/             | Python/Django  | Extra        |
++------------------------------------+-------------------------------------+----------------+--------------+
+| `enterprise-access`_               | http://localhost:18270              | Python/Django  | Extra        |
++------------------------------------+-------------------------------------+----------------+--------------+
+| `enterprise-subsidy`_              | http://localhost:18280              | Python/Django  | Extra        |
 +------------------------------------+-------------------------------------+----------------+--------------+
 
 Some common service combinations include:
@@ -80,6 +92,7 @@ Some common service combinations include:
 .. _frontend-app-gradebook: https://github.com/openedx/frontend-app-gradebook
 .. _lms: https://github.com/openedx/edx-platform
 .. _frontend-app-program-console: https://github.com/edx/frontend-app-program-console
+.. _codejail: https://github.com/openedx/codejail-service
 .. _registrar: https://github.com/edx/registrar
 .. _cms: https://github.com/openedx/edx-platform
 .. _frontend-app-learner-dashboard: https://github.com/openedx/frontend-app-learner-dashboard
@@ -95,3 +108,8 @@ Some common service combinations include:
 .. _frontend-app-ora-grading: https://github.com/edx/frontend-app-ora-grading
 .. _insights: https://github.com/edx/edx-analytics-dashboard
 .. _analyticsapi: https://github.com/edx/edx-analytics-data-api
+.. _designer: https://github.com/edx/portal-designer
+.. _enterprise-catalog: https://github.com/openedx/enterprise-catalog
+.. _license-manager: https://github.com/openedx/license-manager
+.. _enterprise-access: https://github.com/openedx/enterprise-access
+.. _enterprise-subsidy: https://github.com/openedx/enterprise-subsidy

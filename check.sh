@@ -70,11 +70,6 @@ mysql_run_check() {
         "docker compose exec -T $(printf %q "$container_name") mysql --protocol tcp -uroot -se $(printf %q "$mysql_probe")"
 }
 
-if should_check mysql57; then
-    echo "Checking MySQL 5.7 query endpoint:"
-    mysql_run_check mysql57
-fi
-
 if should_check mysql80; then
     echo "Checking MySQL 8.0 query endpoint:"
     mysql_run_check mysql80
@@ -114,6 +109,18 @@ if should_check ecommerce; then
         "curl --fail -L http://localhost:18130/health/"
 fi
 
+if should_check enterprise_access; then
+    echo "Checking enterprise-access health:"
+    run_check enterprise_access_heartbeat enterprise-access \
+        "curl --fail -L http://localhost:18130/health/"
+fi
+
+if should_check enterprise-subsidy; then
+    echo "Checking enterprise_subsidy health:"
+    run_check enterprise-subsidy_heartbeat enterprise-subsidy \
+        "curl --fail -L http://localhost:18280/health/"
+fi
+
 if should_check discovery; then
     echo "Checking discovery health:"
     run_check discovery_heartbeat discovery \
@@ -130,6 +137,12 @@ if should_check edx_notes_api; then
     echo "Checking edx_notes_api heartbeat:"
     run_check edx_notes_api_heartbeat edx_notes_api \
         "curl --fail -L http://localhost:18120/heartbeat"
+fi
+
+if should_check designer; then
+    echo "Checking designer health:"
+    run_check designer_heartbeat designer \
+        "curl --fail -L http://localhost:18808/health/"
 fi
 
 if should_check credentials; then
@@ -154,6 +167,12 @@ if should_check analyticsapi; then
     echo "Running Analytics Data API Devstack tests: "
     run_check analyticsapi_heartbeat analyticsapi \
         "curl --fail -L http://localhost:19001/health/"
+fi
+
+if should_check license-manager; then
+    echo "Running License Manager Devstack tests: "
+    run_check license_manager_heartbeat license-manager \
+        "curl --fail -L http://localhost:18170/health/"
 fi
 
 echo "Successful checks:${succeeded:- NONE}"

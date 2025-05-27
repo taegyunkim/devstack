@@ -90,7 +90,7 @@ CLEAR_REQUEST_CACHE_ON_TASK_COMPLETION = False
 
 ################################ DEBUG TOOLBAR ################################
 
-INSTALLED_APPS += ['debug_toolbar']
+INSTALLED_APPS += ('debug_toolbar',)
 
 MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')
 INTERNAL_IPS = ('127.0.0.1',)
@@ -296,11 +296,12 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 #################### Event bus backend ########################
-
-EVENT_BUS_PRODUCER = 'edx_event_bus_redis.create_producer'
-EVENT_BUS_REDIS_CONNECTION_URL = 'redis://:password@edx.devstack.redis:6379/'
+INSTALLED_APPS += ('edx_event_bus_kafka',)
+EVENT_BUS_KAFKA_SCHEMA_REGISTRY_URL = 'http://edx.devstack.schema-registry:8081'
+EVENT_BUS_KAFKA_BOOTSTRAP_SERVERS = 'edx.devstack.kafka:29092'
+EVENT_BUS_PRODUCER = 'edx_event_bus_kafka.create_producer'
+EVENT_BUS_CONSUMER = 'edx_event_bus_kafka.KafkaEventConsumer'
 EVENT_BUS_TOPIC_PREFIX = 'dev'
-EVENT_BUS_CONSUMER = 'edx_event_bus_redis.RedisEventConsumer'
 
 course_catalog_event_setting = EVENT_BUS_PRODUCER_CONFIG['org.openedx.content_authoring.course.catalog_info.changed.v1']
 course_catalog_event_setting['course-catalog-info-changed']['enabled'] = True
@@ -317,6 +318,16 @@ xblock_duplicated_event_setting['course-authoring-xblock-lifecycle']['enabled'] 
 OPENEDX_TELEMETRY = [
     'edx_django_utils.monitoring.DatadogBackend',
 ]
+
+############################ Codejail ############################
+
+# Disabled by default since codejail service needs to be configured
+# and started separately. See docs/codejail.rst for details.
+#ENABLE_CODEJAIL_REST_SERVICE = True
+
+# Note that this is exposed on port 8080 to other devstack services,
+# but 18030 outside of Docker.
+CODE_JAIL_REST_SERVICE_HOST = "http://edx.devstack.codejail:8080"
 
 ################# New settings must go ABOVE this line #################
 ########################################################################

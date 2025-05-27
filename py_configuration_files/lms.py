@@ -80,7 +80,7 @@ DJFS = {
 
 ################################ DEBUG TOOLBAR ################################
 
-INSTALLED_APPS += ['debug_toolbar']
+INSTALLED_APPS += ('debug_toolbar',)
 MIDDLEWARE += [
     'lms.djangoapps.discussion.django_comment_client.utils.QueryCountDebugMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
@@ -384,6 +384,7 @@ EDXNOTES_CLIENT_NAME = 'edx_notes_api-backend-service'
 ############## Settings for Microfrontends  #########################
 LEARNING_MICROFRONTEND_URL = 'http://localhost:2000'
 ACCOUNT_MICROFRONTEND_URL = 'http://localhost:1997'
+PROFILE_MICROFRONTEND_URL = 'http://localhost:1995'
 COMMUNICATIONS_MICROFRONTEND_URL = 'http://localhost:1984'
 AUTHN_MICROFRONTEND_URL = 'http://localhost:1999'
 AUTHN_MICROFRONTEND_DOMAIN = 'localhost:1999'
@@ -480,7 +481,7 @@ DCS_SESSION_COOKIE_SAMESITE_FORCE_ALL = True
 # COMPREHENSIVE_THEME_DIRS = [
 #     "/edx/app/edxapp/edx-platform/themes/"
 # ]
-# TEMPLATES[1]["DIRS"] = _make_mako_template_dirs
+# TEMPLATES[1]["DIRS"] = Derived(_make_mako_template_dirs)
 # derive_settings(__name__)
 
 # Uncomment the lines below if you'd like to see SQL statements in your devstack LMS log.
@@ -503,10 +504,12 @@ WEBPACK_LOADER['DEFAULT']['TIMEOUT'] = 5
 CLOSEST_CLIENT_IP_FROM_HEADERS = []
 
 #################### Event bus backend ########################
-EVENT_BUS_PRODUCER = 'edx_event_bus_redis.create_producer'
-EVENT_BUS_REDIS_CONNECTION_URL = 'redis://:password@edx.devstack.redis:6379/'
+INSTALLED_APPS += ('edx_event_bus_kafka',)
+EVENT_BUS_KAFKA_SCHEMA_REGISTRY_URL = 'http://edx.devstack.schema-registry:8081'
+EVENT_BUS_KAFKA_BOOTSTRAP_SERVERS = 'edx.devstack.kafka:29092'
+EVENT_BUS_PRODUCER = 'edx_event_bus_kafka.create_producer'
+EVENT_BUS_CONSUMER = 'edx_event_bus_kafka.KafkaEventConsumer'
 EVENT_BUS_TOPIC_PREFIX = 'dev'
-EVENT_BUS_CONSUMER = 'edx_event_bus_redis.RedisEventConsumer'
 
 certificate_revoked_event_config = EVENT_BUS_PRODUCER_CONFIG['org.openedx.learning.certificate.revoked.v1']
 certificate_revoked_event_config['learning-certificate-lifecycle']['enabled'] = True
@@ -558,6 +561,16 @@ CSRF_TRUSTED_ORIGINS = [
 OPENEDX_TELEMETRY = [
     'edx_django_utils.monitoring.DatadogBackend',
 ]
+
+############################ Codejail ############################
+
+# Disabled by default since codejail service needs to be configured
+# and started separately. See docs/codejail.rst for details.
+#ENABLE_CODEJAIL_REST_SERVICE = True
+
+# Note that this is exposed on port 8080 to other devstack services,
+# but 18030 outside of Docker.
+CODE_JAIL_REST_SERVICE_HOST = "http://edx.devstack.codejail:8080"
 
 ################# New settings must go ABOVE this line #################
 ########################################################################

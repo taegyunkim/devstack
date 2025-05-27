@@ -77,6 +77,9 @@ done
 # Fix missing vendor file by clearing the cache
 # docker compose exec -T  lms bash -e -c 'rm /edx/app/edxapp/edx-platform/.prereqs_cache/Node_prereqs.sha1'
 
+# Set edX theme in LMS and CMS.
+./provision-set-edx-theme.sh
+
 # Create static assets for both LMS and CMS
 for app in "${apps[@]}"; do
     make "dev.static.$app"
@@ -87,6 +90,9 @@ done
 
 # Provision a retirement service account user
 ./provision-retirement-user.sh retirement retirement_service_worker
+
+# Provision the default retirement states
+./provision-retirement-states.sh
 
 # Add demo program
 ./programs/provision.sh lms
